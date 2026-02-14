@@ -6,3 +6,14 @@ node_modules/
 
 data/pdf_assets/
 data/pdf_corpus/
+# Generated PDFs
+storage/raw/*.pdf
+
+# Python cache
+*.pyc
+
+# Virtual environment
+backend/.venv/
+
+# Local storage
+storage/
