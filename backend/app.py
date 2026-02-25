@@ -11,7 +11,10 @@ from kv_parser import parse_kv_from_lines
 from validation_engine import validate_bol
 from validation_engine_pod import validate_pod
 from reconciliation_engine import reconcile_shipment
-
+from shipment_service import (
+    get_reconciliation_history,
+    get_shipment_dashboard
+)
 
 # ------------------------------------------------------------------
 # Storage Configuration
@@ -357,3 +360,25 @@ def reconcile(shipment_id: str):
 
     result["new_state"] = new_state
     return result
+
+@app.get("/shipments/{shipment_id}/reconciliation-history")
+def reconciliation_history(shipment_id: str):
+
+    try:
+        history = get_reconciliation_history(shipment_id)
+        return {
+            "shipment_id": shipment_id,
+            "reconciliation_runs": history
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@app.get("/shipments/{shipment_id}")
+def shipment_dashboard(shipment_id: str):
+
+    try:
+        dashboard = get_shipment_dashboard(shipment_id)
+        return dashboard
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
